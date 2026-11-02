@@ -3,91 +3,216 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>YourStartup</title>
-  <meta name="description" content="A student startup prototype for BSAD 281.">
+  <title>Sproutkeeper</title>
+  <meta name="description" content="A simple plant watering schedule to keep every plant thriving.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <!-- =========================================================
-       HEADER: logo text + navigation.
-       Each link points to a "view" further down the page (#home, #explore, #about).
-       ========================================================= -->
   <header class="site-header">
-    <a class="brand" href="#home" id="brand-name">YourStartup</a>
-    <nav aria-label="Main">
-      <a href="#home">Home</a>
-      <a href="#explore">Explore</a>
-      <a href="#about">About</a>
+    <a class="brand" href="#today" aria-label="Sproutkeeper home">
+      <span class="brand-mark" aria-hidden="true">✿</span>
+      <span id="brand-name">Sproutkeeper</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#today" aria-current="page">Today</a>
+      <a href="#plants">My plants</a>
+      <a href="#group">My group</a>
+      <a href="#plans">Plans</a>
     </nav>
+    <button class="button button-primary header-add" id="add-plant-button" type="button" aria-expanded="false" aria-controls="add-plant-panel">
+      <span aria-hidden="true">+</span> Add plant
+    </button>
   </header>
 
   <main>
-
-    <!-- =======================================================
-         VIEW 1: HOME — what you do, for whom, and why it matters.
-         ======================================================= -->
-    <section id="home" data-view>
-      <div class="hero">
-        <p class="eyebrow">Prototype</p>
-        <h1 id="tagline">One sentence that says what your startup does.</h1>
-        <p class="lead" id="pitch">
-          Who is your customer, what problem do they have, and why is your
-          solution better than what they use today?
-        </p>
-        <a class="button" href="#explore">See it in action</a>
-      </div>
-
-      <div class="steps">
-        <div class="card">
-          <h2>1. Step one</h2>
-          <p>Describe the first thing a customer does.</p>
+    <section class="dashboard" id="today" aria-labelledby="tagline">
+      <div class="dashboard-heading">
+        <div>
+          <p class="eyebrow" id="today-label">Today</p>
+          <h1 id="tagline">A little care, right on time.</h1>
+          <p class="intro">Your plant routine, in one easy place.</p>
         </div>
-        <div class="card">
-          <h2>2. Step two</h2>
-          <p>Describe what happens next.</p>
-        </div>
-        <div class="card">
-          <h2>3. Step three</h2>
-          <p>Describe the result the customer gets.</p>
+        <div class="heading-note" aria-label="A reminder to check your plants">
+          <span class="note-mark" aria-hidden="true">↗</span>
+          <span>Small routines<br>make happy plants.</span>
         </div>
       </div>
+
+      <div class="summary" aria-label="Garden summary">
+        <article class="summary-item summary-attention">
+          <span class="summary-label">Needs water</span>
+          <strong id="needs-water-count">0</strong>
+          <span class="summary-note">plants to check</span>
+        </article>
+        <article class="summary-item summary-today">
+          <span class="summary-label">Due today</span>
+          <strong id="due-today-count">0</strong>
+          <span class="summary-note">on today's list</span>
+        </article>
+        <article class="summary-item summary-total">
+          <span class="summary-label">In your garden</span>
+          <strong id="plants-count">0</strong>
+          <span class="summary-note">plants tracked</span>
+        </article>
+      </div>
+
+      <section class="plant-section" id="plants" aria-labelledby="plants-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">YOUR COLLECTION</p>
+            <h2 id="plants-heading">My plants</h2>
+          </div>
+          <div class="filters" role="group" aria-label="Filter plants">
+            <button type="button" data-filter="all" aria-pressed="true">All plants</button>
+            <button type="button" data-filter="needs-water" aria-pressed="false">Needs water</button>
+            <button type="button" data-filter="upcoming" aria-pressed="false">Coming up</button>
+          </div>
+        </div>
+
+        <div class="plant-list" id="plant-list" aria-live="polite"></div>
+        <p class="empty-state" id="empty-state" hidden></p>
+
+        <section class="add-plant-panel" id="add-plant-panel" aria-labelledby="add-heading" hidden>
+          <div class="form-heading">
+            <div>
+              <p class="eyebrow">GROW YOUR COLLECTION</p>
+              <h2 id="add-heading">Add a plant</h2>
+            </div>
+            <button class="text-button" type="button" id="cancel-add">Cancel</button>
+          </div>
+          <form id="add-plant-form">
+            <p class="form-error" id="form-error" role="alert" hidden>Starter includes up to five plants. Choose Plus below to add more.</p>
+            <label>
+              Plant name
+              <input id="plant-name" name="name" type="text" placeholder="e.g. Fern" maxlength="60" required>
+            </label>
+            <label>
+              Plant type <span class="optional">Optional</span>
+              <input name="variety" type="text" placeholder="e.g. Boston fern" maxlength="60">
+            </label>
+            <label>
+              Location <span class="optional">Optional</span>
+              <input name="location" type="text" placeholder="e.g. Kitchen window" maxlength="60">
+            </label>
+            <label>
+              Water every
+              <span class="number-field"><input name="intervalDays" type="number" min="1" max="365" value="7" required><span>days</span></span>
+            </label>
+            <div class="form-actions">
+              <button class="button button-primary" type="submit">Add to my plants</button>
+            </div>
+          </form>
+        </section>
+      </section>
     </section>
 
-    <!-- =======================================================
-         VIEW 2: EXPLORE — a list built from the fake data in data.js.
-         ======================================================= -->
-    <section id="explore" data-view hidden>
-      <h1>Explore</h1>
-      <p class="muted">These examples are fake. They come from <code>data.js</code>.</p>
+    <section class="group-section" id="group" aria-labelledby="group-heading">
+      <div class="group-heading">
+        <div>
+          <p class="eyebrow">A SHARED GARDEN</p>
+          <h2 id="group-heading"><span id="group-name">Living room crew</span></h2>
+          <p class="plans-intro">A little nudge from someone who knows your plants.</p>
+        </div>
+        <p class="group-count"><strong id="group-member-count">0</strong> members</p>
+      </div>
 
-      <label class="search">
-        <span>Search</span>
-        <input type="search" id="search-box" placeholder="Type to filter…">
-      </label>
+      <div class="group-layout">
+        <aside class="group-roster" aria-labelledby="members-heading">
+          <div class="subsection-heading">
+            <h3 id="members-heading">People in your group</h3>
+          </div>
+          <ul class="member-list" id="member-list"></ul>
+          <form class="member-form" id="member-form">
+            <label for="member-name">Add a group member</label>
+            <div class="member-add-row">
+              <input id="member-name" name="member" type="text" placeholder="First name" maxlength="30" required>
+              <button type="submit" class="small-button">Add</button>
+            </div>
+            <p class="member-feedback" id="member-feedback" role="status" aria-live="polite"></p>
+          </form>
+        </aside>
 
-      <p class="muted" id="saved-count"></p>
-      <div class="grid" id="listing-grid"></div>
-      <p class="empty" id="empty-message" hidden>Nothing matches your search.</p>
+        <div class="group-workspace">
+          <form class="reminder-form" id="reminder-form">
+            <div class="subsection-heading">
+              <div>
+                <p class="eyebrow">SEND A NUDGE</p>
+                <h3>Remind someone</h3>
+              </div>
+            </div>
+            <div class="reminder-fields">
+              <label>
+                Who should check in?
+                <select id="reminder-recipient" name="recipient" required></select>
+              </label>
+              <label>
+                Which plant?
+                <select id="reminder-plant" name="plantId" required></select>
+              </label>
+            </div>
+            <label class="message-label">
+              Add a note
+              <textarea name="message" rows="2" maxlength="160" placeholder="A quick note for your plant buddy…" required></textarea>
+            </label>
+            <div class="reminder-submit-row">
+              <p class="group-demo-note">Demo only: reminders appear in this browser and are not sent to other people.</p>
+              <button class="button button-primary" id="reminder-submit" type="submit">Send reminder</button>
+            </div>
+          </form>
+
+          <section class="group-activity" aria-labelledby="activity-heading">
+            <div class="subsection-heading">
+              <h3 id="activity-heading">Recent reminders</h3>
+            </div>
+            <div class="reminder-list" id="reminder-list" aria-live="polite"></div>
+            <p class="empty-state" id="group-empty" hidden>No reminders yet. Send your group the first nudge.</p>
+          </section>
+        </div>
+      </div>
     </section>
 
-    <!-- =======================================================
-         VIEW 3: ABOUT — your team and your story.
-         ======================================================= -->
-    <section id="about" data-view hidden>
-      <h1>About us</h1>
-      <p>Tell the story of why your team started this company.</p>
-      <p>Use first names only, or no names at all — this site is public.</p>
+    <section class="plans-section" id="plans" aria-labelledby="plans-heading">
+      <div class="plans-heading">
+        <div>
+          <p class="eyebrow">SIMPLE MONTHLY PLANS</p>
+          <h2 id="plans-heading">Room for every plant.</h2>
+          <p class="plans-intro">Start small, then grow your garden whenever you're ready.</p>
+        </div>
+        <p class="current-plan" id="current-plan" aria-live="polite">Starter plan</p>
+      </div>
+      <div class="plan-grid">
+        <article class="plan-option">
+          <p class="plan-name">Starter</p>
+          <p class="plan-price">Free</p>
+          <p class="plan-description">A simple routine for a small collection.</p>
+          <ul>
+            <li>Track up to 5 plants</li>
+            <li>Set a watering schedule for each plant</li>
+            <li>See what's due today</li>
+          </ul>
+          <button class="button plan-button plan-secondary" id="starter-plan-button" type="button" disabled>Current plan</button>
+        </article>
+        <article class="plan-option plan-featured">
+          <p class="plan-name">Sproutkeeper Plus</p>
+          <p class="plan-price">$3.99 <span>/ month</span></p>
+          <p class="plan-description">More room to grow, with every plant in one place.</p>
+          <ul>
+            <li>Unlimited plant schedules</li>
+            <li>Personalized watering intervals</li>
+            <li>Daily overview of what needs care</li>
+          </ul>
+          <button class="button button-primary plan-button" id="plus-plan-button" type="button">Start Plus · $3.99/month</button>
+        </article>
+      </div>
+      <p class="plan-message" id="plan-message" role="status">Subscription selection is a demo. No payment is collected; your choice is saved only in this browser.</p>
     </section>
-
   </main>
 
-  <!-- Keep this footer. Your site must say it is a student project. -->
   <footer class="site-footer">
-    <p>Student prototype for BSAD 281 at St. Francis Xavier University. Not a real company — all data is fictional.</p>
+    <span>Sproutkeeper</span>
+    <span>Student prototype for BSAD 281 at St. Francis Xavier University. Not a real company; all data is fictional.</span>
   </footer>
 
-  <!-- Scripts load in this order: data first, then the code that uses it. -->
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
